@@ -51,6 +51,7 @@
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "dependsOn": ["^generate-types"],
       "options": {
         "jestConfig": "apps/jobber-auth/jest.config.ts",
         "passWithNoTests": true
