@@ -7,6 +7,10 @@ import { hash } from 'bcryptjs';
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  async findOne(data: Prisma.UserWhereUniqueInput) {
+    return this.prismaService.user.findUniqueOrThrow({ where: data });
+  }
+
   async findAll() {
     return this.prismaService.user.findMany();
   }
