@@ -39,6 +39,9 @@ export class AuthService {
   private async verifyUser(email: string, password: string) {
     try {
       const user = await this.userService.findOne({ email });
+      if (!user) {
+        throw new UnauthorizedException('no user found with this email');
+      }
       const authenticate = await compare(password, user.password);
       if (!authenticate) {
         throw new UnauthorizedException();

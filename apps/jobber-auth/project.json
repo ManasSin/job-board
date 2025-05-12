@@ -62,11 +62,6 @@
           "codeCoverage": true
         }
       }
-    },
-    "test-addedByMe": {
-      "options": {
-        "passWithNoTests": true
-      }
     }
   }
 }
