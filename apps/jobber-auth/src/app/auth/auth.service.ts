@@ -34,6 +34,7 @@ export class AuthService {
       secure: this.configService.get('NODE_ENV') == 'production',
       expires,
     });
+    return user;
   }
 
   private async verifyUser(email: string, password: string) {
