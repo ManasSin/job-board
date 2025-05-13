@@ -10,6 +10,11 @@ import { JobModule } from './jobs/job.module';
     JobModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
+      playground: {
+        settings: {
+          'request.credentials': 'include',
+        },
+      },
       autoSchemaFile: true,
     }),
   ],
