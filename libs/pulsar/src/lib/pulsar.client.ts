@@ -1,21 +1,38 @@
 import { Injectable, OnModuleDestroy } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Client } from 'pulsar-client';
+import { Client, Consumer, Message, Producer } from 'pulsar-client';
 
 @Injectable()
 export class PulsarClient implements OnModuleDestroy {
   private client = new Client({
     serviceUrl: this.configService.getOrThrow<string>('PULSAR_SERVICE_URL'),
   });
+  private readonly producers: Producer[] = [];
+  private readonly consumer: Consumer[] = [];
+
   constructor(private readonly configService: ConfigService) {}
 
   async createProducer(topic: string) {
-    return this.client.createProducer({
+    const producer = await this.client.createProducer({
       topic,
     });
+    this.producers.push(producer);
+    return producer;
+  }
+
+  async createConsumer(topic: string, listener: (message: Message) => void) {
+    const consumer = await this.client.subscribe({
+      topic,
+      subscription: 'jobber',
+      listener,
+    });
+    this.consumer.push(consumer);
+    return consumer;
   }
 
   async onModuleDestroy() {
-    await this.client.close();
+    for (const producer of this.producers) {
+      producer.close();
+    }
   }
 }
